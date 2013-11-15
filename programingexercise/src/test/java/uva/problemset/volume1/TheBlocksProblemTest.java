@@ -39,11 +39,24 @@ public class TheBlocksProblemTest {
   public void testMove() {
     block.init(10);
     block.moveOnto(9, 1);
-    //printBlocks(block.getBlocks());
     block.moveOnto(8, 1);
     block.moveOver(9, 1);
     block.moveOver(7, 1);
     block.moveOver(9, 4);
+    printBlocks(block.getBlocks());
+  }
+  
+  @Test
+  public void testPile() {
+    block.init(10);
+    block.moveOnto(9, 1);
+    block.moveOver(8, 1);
+    block.moveOver(7, 1);
+    block.moveOver(6, 1);
+    block.pileOver(8, 6);
+    block.pileOver(8, 5);
+    block.moveOver(2, 1);
+    block.moveOver(4, 9);
     printBlocks(block.getBlocks());
   }
 }

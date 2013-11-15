@@ -14,6 +14,7 @@ import java.util.Stack;
 public class TheBlocksProblem {
 
   private List<Stack<Integer>> blocks;
+  private int prevIndex = 0;
   
   public List<Stack<Integer>> init(int n) {
     blocks = new ArrayList<Stack<Integer>>();
@@ -109,7 +110,41 @@ public class TheBlocksProblem {
    * @param b
    */
   public void pileOnto(int a, int b) {
+    // a 블럭위로 쌓여있는 모든 블럭 저장.
+    Stack<Integer> temp = findBlockAndSaveTemp(a);
+    if (temp.contains(b)) {
+      rollbackBlocks(temp);
+      return;
+    }
+    // b 위에 쌓여있는 블럭들을 초기화.
     findBlockAndInit(b);
+    // a blocks pile 을 b block 위로.
+    pileOverToB(b, temp);
+  }
+
+  private void pileOverToB(int b, Stack<Integer> temp) {
+    for (Stack<Integer> block : blocks) {
+      if (block.search(b) > 0) {
+        while(temp.empty() == false) {
+          block.push(temp.pop());
+        }
+      }
+    }
+  }
+
+  private Stack<Integer> findBlockAndSaveTemp(int a) {
+    Stack<Integer> temp = new Stack<Integer>();
+    for (Stack<Integer> block : blocks) {
+      if (block.search(a) > 0) {
+        int aIndex = block.search(a);
+        for (int i = 0; i < aIndex; i++) {
+          temp.push(block.pop());
+        }
+        break;
+      }
+      prevIndex++;
+    }
+    return temp;
   }
   
   /**
@@ -120,6 +155,18 @@ public class TheBlocksProblem {
    * @param b
    */
   public void pileOver(int a, int b) {
-    
+    Stack<Integer> temp = findBlockAndSaveTemp(a);
+    if (temp.contains(b)) {
+      // temp 에 저장되어 있는것을 원래 블럭 위치로.
+      rollbackBlocks(temp);
+      return;
+    }
+    pileOverToB(b, temp);
+  }
+
+  private void rollbackBlocks(Stack<Integer> temp) {
+    while (temp.empty() == false) {
+      blocks.get(prevIndex).push(temp.pop());
+    }
   }
 }
