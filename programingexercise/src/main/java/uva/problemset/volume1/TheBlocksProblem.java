@@ -16,6 +16,10 @@ public class TheBlocksProblem {
   private List<Stack<Integer>> blocks;
   private int prevIndex = 0;
   
+  public static void main(String[] args) {
+    
+  }
+  
   public List<Stack<Integer>> init(int n) {
     blocks = new ArrayList<Stack<Integer>>();
     for (int i = 0; i < n; i++) {
